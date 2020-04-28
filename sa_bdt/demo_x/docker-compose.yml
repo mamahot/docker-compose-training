@@ -1,0 +1,41 @@
+version: '3'
+services:
+  webserver:
+    container_name: webServer_master
+    build: webServer/
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./webServer/code:/code # 把指定目錄 mount 進去 container
+    networks:
+      - demo_x
+
+  webserver_2:
+    container_name: webServer_slave
+    build: webServer/
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./webServer_slave/code:/code
+    networks:
+      - demo_x
+
+  redis:
+    container_name: redis
+    image: "redis:latest" # 從 Docker Hub registry 來的 image
+    networks:
+      - demo_x
+
+  Nginx:
+    container_name: nginx
+    image: "nginx:latest"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - demo_x
+
+networks:
+  demo_x:
+    external: true

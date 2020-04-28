@@ -1,0 +1,15 @@
+version: '3'
+services:
+  webserver:
+    build: ./webServer/
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./webServer/code:/code # 把指定目錄 mount 進去 container
+  redis:
+    container_name: redis
+    image: "redis:latest" # 從 Docker Hub registry 來的 image
+    volumes:
+      - redis-master:/data
+volumes:
+  redis-master:
